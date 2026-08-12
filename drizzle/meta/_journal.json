@@ -15,6 +15,13 @@
       "when": 1786511485510,
       "tag": "0001_puzzling_solo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786517350176,
+      "tag": "0002_funny_sharon_carter",
+      "breakpoints": true
     }
   ]
 }

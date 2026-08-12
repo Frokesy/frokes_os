@@ -8,6 +8,11 @@ import { eq } from "drizzle-orm";
 export default async function Home() {
   const session = await auth();
   if (!session?.user) redirect("/sign-in");
-  const [profile] = await getDb().select({ timezone: users.timezone }).from(users).where(eq(users.id, session.user.id)).limit(1);
-  return <AppShell userName={session.user.name ?? "Frokes"} userId={session.user.id} timeZone={profile?.timezone ?? "Africa/Lagos"}/>;
+  const [profile] = await getDb().select({
+    name: users.name, about: users.about, timezone: users.timezone, tone: users.tone,
+    priorities: users.priorities, personalizationEnabled: users.personalizationEnabled,
+    moodThemeEnabled: users.moodThemeEnabled, onboardingCompletedAt: users.onboardingCompletedAt,
+  }).from(users).where(eq(users.id, session.user.id)).limit(1);
+  if (!profile) redirect("/sign-in");
+  return <AppShell userId={session.user.id} initialProfile={profile}/>;
 }

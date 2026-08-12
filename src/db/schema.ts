@@ -1,4 +1,4 @@
-import { index, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import type { DayRecord } from "@/domain/types";
 
 export const users = pgTable("users", {
@@ -7,6 +7,12 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   timezone: text("timezone").notNull().default("Africa/Lagos"),
+  about: text("about").notNull().default(""),
+  tone: text("tone").$type<"calm" | "direct" | "reflective" | "encouraging">().notNull().default("calm"),
+  priorities: jsonb("priorities").$type<string[]>().notNull().default([]),
+  personalizationEnabled: boolean("personalization_enabled").notNull().default(false),
+  moodThemeEnabled: boolean("mood_theme_enabled").notNull().default(true),
+  onboardingCompletedAt: timestamp("onboarding_completed_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
