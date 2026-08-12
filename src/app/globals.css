@@ -16,4 +16,24 @@
 .route-page-enter { animation: route-page-in 320ms cubic-bezier(.2,.72,.22,1); }
 .workspace-view-enter { animation: workspace-view-in 300ms cubic-bezier(.2,.72,.22,1) both; }
 .route-loading-line { animation: route-loading 1.05s cubic-bezier(.55,.05,.35,.95) infinite; }
+.mood-shell {
+  --mood-bg: #080a0d;
+  --mood-surface: #0e1217;
+  --mood-accent: #b7f35b;
+  --mood-accent-soft: rgba(183,243,91,.10);
+  --mood-accent-border: rgba(183,243,91,.40);
+  --mood-glow: rgba(183,243,91,.075);
+  --mood-glow-secondary: rgba(82,130,255,.035);
+}
+.mood-shell[data-mood="great"] { --mood-bg:#090b0a; --mood-surface:#10140f; --mood-accent:#c7f36a; --mood-accent-soft:rgba(199,243,106,.11); --mood-accent-border:rgba(199,243,106,.42); --mood-glow:rgba(199,243,106,.105); --mood-glow-secondary:rgba(229,183,82,.055); }
+.mood-shell[data-mood="good"] { --mood-bg:#080c0b; --mood-surface:#0d1412; --mood-accent:#75dfa7; --mood-accent-soft:rgba(117,223,167,.10); --mood-accent-border:rgba(117,223,167,.40); --mood-glow:rgba(117,223,167,.085); --mood-glow-secondary:rgba(102,197,221,.04); }
+.mood-shell[data-mood="okay"] { --mood-bg:#090b0f; --mood-surface:#0e1219; --mood-accent:#8eb9e8; --mood-accent-soft:rgba(142,185,232,.10); --mood-accent-border:rgba(142,185,232,.38); --mood-glow:rgba(142,185,232,.08); --mood-glow-secondary:rgba(125,111,210,.045); }
+.mood-shell[data-mood="low"] { --mood-bg:#0b0a10; --mood-surface:#121019; --mood-accent:#aaa2e8; --mood-accent-soft:rgba(170,162,232,.10); --mood-accent-border:rgba(170,162,232,.38); --mood-glow:rgba(170,162,232,.075); --mood-glow-secondary:rgba(219,172,103,.05); }
+.mood-shell[data-mood="rough"] { --mood-bg:#0d0b09; --mood-surface:#15110e; --mood-accent:#d6aa70; --mood-accent-soft:rgba(214,170,112,.11); --mood-accent-border:rgba(214,170,112,.40); --mood-glow:rgba(214,170,112,.08); --mood-glow-secondary:rgba(183,117,78,.04); }
+.mood-ambient { background: radial-gradient(circle at 78% 14%, var(--mood-glow), transparent 33%), radial-gradient(circle at 18% 80%, var(--mood-glow-secondary), transparent 38%); }
+.mood-shell .card { background-color: var(--mood-surface); transition: background-color 700ms ease, border-color 700ms ease; }
+.mood-shell .primary-button { background-color: var(--mood-accent); }
+.mood-shell .primary-button:hover { filter: brightness(1.08); }
+.mood-shell .choice-active { border-color: var(--mood-accent-border); background-color: var(--mood-accent-soft); color: var(--mood-accent); }
+.mood-shell .input:focus { border-color: var(--mood-accent-border); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }

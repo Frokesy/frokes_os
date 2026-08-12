@@ -40,14 +40,14 @@ export function HomeView({ userName, userId, timeZone, onProceed }: { userName: 
     onProceed();
   };
 
-  return <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#080a0d] px-5 py-12 text-[#f4f5ef] md:px-10">
-    <div className="pointer-events-none absolute left-[12%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(183,243,91,.14),rgba(82,130,255,.045)_48%,transparent_70%)] blur-2xl"/>
+  return <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[var(--mood-bg)] px-5 py-12 text-[#f4f5ef] transition-colors duration-700 md:px-10">
+    <div className="pointer-events-none absolute left-[12%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,var(--mood-glow),var(--mood-glow-secondary)_48%,transparent_70%)] blur-2xl"/>
     <div className="pointer-events-none absolute -right-[8%] top-[24%] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(117,92,255,.13),rgba(54,207,201,.04)_48%,transparent_70%)] blur-2xl"/>
     <div className="pointer-events-none absolute bottom-[-22%] left-[36%] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(214,184,120,.10),rgba(183,243,91,.025)_50%,transparent_72%)] blur-3xl"/>
-    <div className="pointer-events-none absolute left-1/2 top-[47%] h-[min(80vw,760px)] w-[min(80vw,760px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#b7f35b]/[.08] bg-[radial-gradient(circle,rgba(183,243,91,.045),transparent_62%)] shadow-[0_0_100px_rgba(183,243,91,.035)]"/>
+    <div className="pointer-events-none absolute left-1/2 top-[47%] h-[min(80vw,760px)] w-[min(80vw,760px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--mood-accent-border)] bg-[radial-gradient(circle,var(--mood-glow),transparent_62%)] opacity-30 shadow-[0_0_100px_var(--mood-glow)]"/>
     <div className="pointer-events-none absolute left-1/2 top-[47%] h-[min(62vw,570px)] w-[min(62vw,570px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[.035]"/>
     <section className="relative w-full max-w-4xl text-center">
-      <p className="text-[10px] font-semibold uppercase tracking-[.25em] text-[#b7f35b]">Frokes OS · online</p>
+      <p className="text-[10px] font-semibold uppercase tracking-[.25em] text-[var(--mood-accent)] transition-colors duration-700">Frokes OS · online</p>
       <h1 className="mt-7 text-4xl font-medium tracking-[-.04em] sm:text-6xl">{greeting}, {userName}.</h1>
       <p className="mt-4 text-sm text-white/35">{date} · {timeZone.replace("_", " ")}</p>
 
@@ -56,7 +56,7 @@ export function HomeView({ userName, userId, timeZone, onProceed }: { userName: 
       </div>
 
       <p className="mx-auto max-w-md text-sm leading-7 text-white/40">{language.note} Learn something, check in with yourself, and move through today intentionally.</p>
-      <button onClick={proceed} className="group mx-auto mt-9 inline-flex items-center gap-3 rounded-2xl bg-[#b7f35b] px-6 py-4 text-sm font-semibold text-[#11170a] transition hover:bg-[#c5fb73] active:scale-[.98]">
+      <button onClick={proceed} className="group mx-auto mt-9 inline-flex items-center gap-3 rounded-2xl bg-[var(--mood-accent)] px-6 py-4 text-sm font-semibold text-[#11170a] transition hover:brightness-110 active:scale-[.98]">
         {language.button} <ArrowRight size={17} className="transition-transform group-hover:translate-x-1"/>
       </button>
 

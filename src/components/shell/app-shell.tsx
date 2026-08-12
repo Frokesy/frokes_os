@@ -51,10 +51,13 @@ export function AppShell({ userId, initialProfile }: { userId: string; initialPr
     ? transition === "to-home" ? "app-scene-enter" : transition === "to-clock" ? "app-scene-exit" : "pointer-events-none opacity-0"
     : "opacity-100";
 
-  return <div className="min-h-dvh bg-[#080a0d] text-[#f4f5ef]">
-    <div className={shellMotion} aria-hidden={clockVisible && transition === "idle"}>
+  const activeMood = profile.moodThemeEnabled ? (store.today.mood?.mood ?? "neutral") : "neutral";
+
+  return <div className="mood-shell min-h-dvh bg-[var(--mood-bg)] text-[#f4f5ef] transition-colors duration-700" data-mood={activeMood}>
+    <div aria-hidden="true" className="mood-ambient pointer-events-none fixed inset-0 z-0 transition-opacity duration-700"/>
+    <div className={`relative z-10 ${shellMotion}`} aria-hidden={clockVisible && transition === "idle"}>
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r border-white/[.07] bg-[#0b0e12] p-6 md:flex">
-        <div className="mb-12 flex items-center gap-3"><div className="grid h-9 w-9 place-items-center rounded-xl bg-[#b7f35b] font-black text-[#0a0d08]">F</div><div><div className="font-semibold tracking-tight">Frokes OS</div><div className="text-[10px] uppercase tracking-[.24em] text-white/35">Personal system</div></div></div>
+        <div className="mb-12 flex items-center gap-3"><div className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--mood-accent)] font-black text-[#0a0d08] transition-colors duration-700">F</div><div><div className="font-semibold tracking-tight">Frokes OS</div><div className="text-[10px] uppercase tracking-[.24em] text-white/35">Personal system</div></div></div>
         <nav className="space-y-1">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${view === id ? "bg-white/[.07] text-white" : "text-white/45 hover:bg-white/[.04] hover:text-white/75"}`}><Icon size={18}/>{label}</button>)}</nav>
         <div className="mt-auto"><div className="mb-5 rounded-2xl border border-white/[.07] bg-white/[.025] p-4"><p className="text-xs leading-relaxed text-white/45">A quiet place to become more intentional, one day at a time.</p></div><InstallApp/><Link href="/settings" className="flex items-center gap-3 px-3 py-3 text-sm text-white/35 transition hover:text-white/70"><Settings size={17}/> Settings</Link><button onClick={() => signOut({ callbackUrl: "/sign-in" })} className="flex items-center gap-3 px-3 py-3 text-sm text-white/35 transition hover:text-white/70"><LogOut size={17}/> Sign out</button></div>
       </aside>
@@ -67,10 +70,10 @@ export function AppShell({ userId, initialProfile }: { userId: string; initialPr
           )}
         </div>
       </main>
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-[#0b0e12]/95 px-3 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex flex-1 flex-col items-center gap-1 py-1 text-[10px] ${view === id ? "text-[#b7f35b]" : "text-white/40"}`}><Icon size={20}/>{label}</button>)}<Link href="/settings" className="flex flex-1 flex-col items-center gap-1 py-1 text-[10px] text-white/40"><Settings size={20}/>Settings</Link><InstallApp mobile/></nav>
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-[#0b0e12]/95 px-3 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex flex-1 flex-col items-center gap-1 py-1 text-[10px] ${view === id ? "text-[var(--mood-accent)]" : "text-white/40"}`}><Icon size={20}/>{label}</button>)}<Link href="/settings" className="flex flex-1 flex-col items-center gap-1 py-1 text-[10px] text-white/40"><Settings size={20}/>Settings</Link><InstallApp mobile/></nav>
     </div>
 
-    {clockVisible && <div className={`fixed inset-0 z-50 bg-[#080a0d] ${transition === "to-home" ? "arrival-scene-exit pointer-events-none" : transition === "to-clock" ? "arrival-scene-enter" : ""}`}>
+    {clockVisible && <div className={`fixed inset-0 z-50 bg-[var(--mood-bg)] transition-colors duration-700 ${transition === "to-home" ? "arrival-scene-exit pointer-events-none" : transition === "to-clock" ? "arrival-scene-enter" : ""}`}>
       <HomeView userName={profile.name} userId={userId} timeZone={profile.timezone} onProceed={beginToday}/>
     </div>}
     {profileOpen && (
