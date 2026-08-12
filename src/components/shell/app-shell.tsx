@@ -58,7 +58,15 @@ export function AppShell({ userId, initialProfile }: { userId: string; initialPr
         <nav className="space-y-1">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${view === id ? "bg-white/[.07] text-white" : "text-white/45 hover:bg-white/[.04] hover:text-white/75"}`}><Icon size={18}/>{label}</button>)}</nav>
         <div className="mt-auto"><div className="mb-5 rounded-2xl border border-white/[.07] bg-white/[.025] p-4"><p className="text-xs leading-relaxed text-white/45">A quiet place to become more intentional, one day at a time.</p></div><InstallApp/><Link href="/settings" className="flex items-center gap-3 px-3 py-3 text-sm text-white/35 transition hover:text-white/70"><Settings size={17}/> Settings</Link><button onClick={() => signOut({ callbackUrl: "/sign-in" })} className="flex items-center gap-3 px-3 py-3 text-sm text-white/35 transition hover:text-white/70"><LogOut size={17}/> Sign out</button></div>
       </aside>
-      <main className="pb-24 md:ml-[244px] md:pb-8">{view === "home" ? <TodayView store={store} userName={profile.name} timeZone={profile.timezone} onReturnToClock={returnToClock}/> : <HistoryView records={store.records} wordsOnly={view === "library"}/>}</main>
+      <main className="pb-24 md:ml-[244px] md:pb-8">
+        <div key={view} className="workspace-view-enter">
+          {view === "home" ? (
+            <TodayView store={store} userName={profile.name} timeZone={profile.timezone} onReturnToClock={returnToClock}/>
+          ) : (
+            <HistoryView records={store.records} wordsOnly={view === "library"}/>
+          )}
+        </div>
+      </main>
       <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-[#0b0e12]/95 px-3 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex flex-1 flex-col items-center gap-1 py-1 text-[10px] ${view === id ? "text-[#b7f35b]" : "text-white/40"}`}><Icon size={20}/>{label}</button>)}<Link href="/settings" className="flex flex-1 flex-col items-center gap-1 py-1 text-[10px] text-white/40"><Settings size={20}/>Settings</Link><InstallApp mobile/></nav>
     </div>
 

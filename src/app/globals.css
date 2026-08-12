@@ -6,8 +6,14 @@
 @keyframes arrival-in { 0% { opacity: 0; transform: scale(1.035); filter: blur(8px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
 @keyframes app-in { 0% { opacity: 0; transform: translateY(18px) scale(.992); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes app-out { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(14px) scale(.994); } }
+@keyframes route-page-in { 0% { opacity: 0; transform: translateY(5px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes workspace-view-in { 0% { opacity: 0; transform: translateY(7px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes route-loading { 0% { transform: translateX(-110%); } 55% { transform: translateX(90%); } 100% { transform: translateX(220%); } }
 .arrival-scene-exit { animation: arrival-out 720ms cubic-bezier(.22,.75,.2,1) both; transform-origin: center; }
 .arrival-scene-enter { animation: arrival-in 680ms cubic-bezier(.2,.72,.22,1) both; transform-origin: center; }
 .app-scene-enter { animation: app-in 720ms cubic-bezier(.2,.72,.22,1) both; }
 .app-scene-exit { animation: app-out 620ms cubic-bezier(.4,0,.35,1) both; pointer-events: none; }
+.route-page-enter { animation: route-page-in 320ms cubic-bezier(.2,.72,.22,1); }
+.workspace-view-enter { animation: workspace-view-in 300ms cubic-bezier(.2,.72,.22,1) both; }
+.route-loading-line { animation: route-loading 1.05s cubic-bezier(.55,.05,.35,.95) infinite; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
