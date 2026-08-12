@@ -8,6 +8,13 @@
       "when": 1786506724024,
       "tag": "0000_hot_malcolm_colcord",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786511485510,
+      "tag": "0001_puzzling_solo",
+      "breakpoints": true
     }
   ]
 }

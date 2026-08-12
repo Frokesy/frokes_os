@@ -21,3 +21,13 @@ export const dailyRecords = pgTable("daily_records", {
   primaryKey({ columns: [table.userId, table.date] }),
   index("daily_records_user_updated_idx").on(table.userId, table.updatedAt),
 ]);
+
+// Mutation IDs make offline retries safe: a queued edit is applied at most once.
+export const syncMutations = pgTable("sync_mutations", {
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  mutationId: text("mutation_id").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.userId, table.mutationId] }),
+  index("sync_mutations_created_idx").on(table.createdAt),
+]);

@@ -25,4 +25,8 @@ Apply the committed schema migration before opening registration:
 npm run db:migrate
 ```
 
-Accounts use email/password credentials, bcrypt password hashing, HTTP-only signed session cookies, and protected application routes. Daily records still use browser storage until the next synchronization milestone; the database table for user-owned records is already included in the migration.
+Accounts use email/password credentials, bcrypt password hashing, HTTP-only signed session cookies, and protected application routes.
+
+Daily records are local-first. Every edit is saved immediately in user-scoped browser storage and added to a durable mutation queue. The queue synchronizes on startup, when connectivity returns, when the app becomes visible, and periodically while open. Mutation IDs make retries idempotent, while top-level ritual sections merge so edits to mood and reflection on separate devices do not overwrite one another.
+
+Records created before authentication are imported once into the first signed-in account on that browser. The original local data is retained, and an additional user-scoped backup is created before import.

@@ -14,9 +14,9 @@ const nav = [
   { id: "library", label: "Words", icon: BookOpen },
 ] as const;
 
-export function AppShell({ userName }: { userName: string }) {
+export function AppShell({ userName, userId }: { userName: string; userId: string }) {
   const [view, setView] = useState<(typeof nav)[number]["id"]>("today");
-  const store = useDailyRecords();
+  const store = useDailyRecords(userId);
   return (
     <div className="min-h-dvh bg-[#080a0d] text-[#f4f5ef]">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r border-white/[.07] bg-[#0b0e12] p-6 md:flex">
