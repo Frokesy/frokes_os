@@ -14,8 +14,11 @@ export const moneyTips = [
   { eyebrow: "Opportunity cost", title: "Every yes quietly says no elsewhere.", body: "Before spending, ask what else this money could support. There is no universally right answer—only a more intentional one.", action: "Name the trade-off behind one choice" },
 ];
 
-export function dailyIndex(length: number, date = new Date()) {
-  const start = Date.UTC(date.getUTCFullYear(), 0, 0);
-  const day = Math.floor((Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - start) / 86400000);
+export function dailyIndex(length: number, date = new Date(), timeZone = "Africa/Lagos") {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(date);
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  const year = Number(values.year), month = Number(values.month), dateOfMonth = Number(values.day);
+  const start = Date.UTC(year, 0, 0);
+  const day = Math.floor((Date.UTC(year, month - 1, dateOfMonth) - start) / 86400000);
   return day % length;
 }

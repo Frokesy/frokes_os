@@ -23,14 +23,14 @@ const merge = (base: Record<string, DayRecord>, overlays: Mutation[]) => overlay
   [item.date]: { ...result[item.date], ...item.patch, date: item.date },
 }), base);
 
-export function useDailyRecords(userId: string) {
+export function useDailyRecords(userId: string, timeZone: string) {
   const [records, setRecords] = useState<Record<string, DayRecord>>({});
   const [ready, setReady] = useState(false);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("loading");
   const [pendingCount, setPendingCount] = useState(0);
   const syncing = useRef(false);
   const mounted = useRef(true);
-  const today = dateKey();
+  const today = dateKey(new Date(), timeZone);
 
   const sync = useCallback(async () => {
     if (syncing.current || !navigator.onLine) {

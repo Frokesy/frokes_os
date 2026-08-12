@@ -1,22 +1,25 @@
 "use client";
 
-import { BookOpen, CalendarDays, LayoutGrid, LogOut, Settings } from "lucide-react";
+import { BookOpen, CalendarDays, House, LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { TodayView } from "@/components/today/today-view";
 import { HistoryView } from "@/components/history/history-view";
 import { useDailyRecords } from "@/hooks/use-daily-records";
 import { InstallApp } from "@/components/pwa/install-app";
+import { HomeView } from "@/components/home/home-view";
 
 const nav = [
-  { id: "today", label: "Today", icon: LayoutGrid },
+  { id: "home", label: "Home", icon: House },
   { id: "history", label: "History", icon: CalendarDays },
   { id: "library", label: "Words", icon: BookOpen },
 ] as const;
+type View = "arrival" | (typeof nav)[number]["id"];
 
-export function AppShell({ userName, userId }: { userName: string; userId: string }) {
-  const [view, setView] = useState<(typeof nav)[number]["id"]>("today");
-  const store = useDailyRecords(userId);
+export function AppShell({ userName, userId, timeZone }: { userName: string; userId: string; timeZone: string }) {
+  const [view, setView] = useState<View>("arrival");
+  const store = useDailyRecords(userId, timeZone);
+  if (view === "arrival") return <HomeView userName={userName} userId={userId} timeZone={timeZone} onProceed={() => setView("home")}/>;
   return (
     <div className="min-h-dvh bg-[#080a0d] text-[#f4f5ef]">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r border-white/[.07] bg-[#0b0e12] p-6 md:flex">
@@ -24,7 +27,7 @@ export function AppShell({ userName, userId }: { userName: string; userId: strin
         <nav className="space-y-1">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${view === id ? "bg-white/[.07] text-white" : "text-white/45 hover:bg-white/[.04] hover:text-white/75"}`}><Icon size={18}/>{label}</button>)}</nav>
         <div className="mt-auto"><div className="mb-5 rounded-2xl border border-white/[.07] bg-white/[.025] p-4"><p className="text-xs leading-relaxed text-white/45">A quiet place to become more intentional, one day at a time.</p></div><InstallApp/><button className="flex items-center gap-3 px-3 py-3 text-sm text-white/35"><Settings size={17}/> Settings</button><button onClick={() => signOut({ callbackUrl: "/sign-in" })} className="flex items-center gap-3 px-3 py-3 text-sm text-white/35 transition hover:text-white/70"><LogOut size={17}/> Sign out</button></div>
       </aside>
-      <main className="pb-24 md:ml-[244px] md:pb-8">{view === "today" ? <TodayView store={store} userName={userName}/> : <HistoryView records={store.records} wordsOnly={view === "library"}/>}</main>
+      <main className="pb-24 md:ml-[244px] md:pb-8">{view === "home" ? <TodayView store={store} userName={userName} timeZone={timeZone} onReturnToClock={() => setView("arrival")}/> : <HistoryView records={store.records} wordsOnly={view === "library"}/>}</main>
       <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-[#0b0e12]/95 px-3 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden">{nav.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => setView(id)} className={`flex flex-1 flex-col items-center gap-1 py-1 text-[10px] ${view === id ? "text-[#b7f35b]" : "text-white/40"}`}><Icon size={20}/>{label}</button>)}<InstallApp mobile/></nav>
     </div>
   );
