@@ -19,19 +19,29 @@
 .mood-shell {
   --mood-bg: #080a0d;
   --mood-surface: #0e1217;
+  --mood-surface-strong: #111821;
+  --mood-nav: rgba(11,14,18,.94);
   --mood-accent: #b7f35b;
   --mood-accent-soft: rgba(183,243,91,.10);
   --mood-accent-border: rgba(183,243,91,.40);
-  --mood-glow: rgba(183,243,91,.075);
-  --mood-glow-secondary: rgba(82,130,255,.035);
+  --mood-glow: rgba(183,243,91,.15);
+  --mood-glow-secondary: rgba(82,130,255,.08);
 }
-.mood-shell[data-mood="great"] { --mood-bg:#090b0a; --mood-surface:#10140f; --mood-accent:#c7f36a; --mood-accent-soft:rgba(199,243,106,.11); --mood-accent-border:rgba(199,243,106,.42); --mood-glow:rgba(199,243,106,.105); --mood-glow-secondary:rgba(229,183,82,.055); }
-.mood-shell[data-mood="good"] { --mood-bg:#080c0b; --mood-surface:#0d1412; --mood-accent:#75dfa7; --mood-accent-soft:rgba(117,223,167,.10); --mood-accent-border:rgba(117,223,167,.40); --mood-glow:rgba(117,223,167,.085); --mood-glow-secondary:rgba(102,197,221,.04); }
-.mood-shell[data-mood="okay"] { --mood-bg:#090b0f; --mood-surface:#0e1219; --mood-accent:#8eb9e8; --mood-accent-soft:rgba(142,185,232,.10); --mood-accent-border:rgba(142,185,232,.38); --mood-glow:rgba(142,185,232,.08); --mood-glow-secondary:rgba(125,111,210,.045); }
-.mood-shell[data-mood="low"] { --mood-bg:#0b0a10; --mood-surface:#121019; --mood-accent:#aaa2e8; --mood-accent-soft:rgba(170,162,232,.10); --mood-accent-border:rgba(170,162,232,.38); --mood-glow:rgba(170,162,232,.075); --mood-glow-secondary:rgba(219,172,103,.05); }
-.mood-shell[data-mood="rough"] { --mood-bg:#0d0b09; --mood-surface:#15110e; --mood-accent:#d6aa70; --mood-accent-soft:rgba(214,170,112,.11); --mood-accent-border:rgba(214,170,112,.40); --mood-glow:rgba(214,170,112,.08); --mood-glow-secondary:rgba(183,117,78,.04); }
-.mood-ambient { background: radial-gradient(circle at 78% 14%, var(--mood-glow), transparent 33%), radial-gradient(circle at 18% 80%, var(--mood-glow-secondary), transparent 38%); }
-.mood-shell .card { background-color: var(--mood-surface); transition: background-color 700ms ease, border-color 700ms ease; }
+.mood-shell[data-mood="great"] { --mood-bg:#0a0e08; --mood-surface:#11190d; --mood-surface-strong:#172211; --mood-nav:rgba(11,17,8,.94); --mood-accent:#c7f36a; --mood-accent-soft:rgba(199,243,106,.15); --mood-accent-border:rgba(199,243,106,.48); --mood-glow:rgba(199,243,106,.19); --mood-glow-secondary:rgba(229,183,82,.12); }
+.mood-shell[data-mood="good"] { --mood-bg:#07100c; --mood-surface:#0c1813; --mood-surface-strong:#102119; --mood-nav:rgba(7,16,12,.94); --mood-accent:#75dfa7; --mood-accent-soft:rgba(117,223,167,.15); --mood-accent-border:rgba(117,223,167,.46); --mood-glow:rgba(117,223,167,.18); --mood-glow-secondary:rgba(102,197,221,.10); }
+.mood-shell[data-mood="okay"] { --mood-bg:#070c13; --mood-surface:#0c1420; --mood-surface-strong:#111c2b; --mood-nav:rgba(7,12,19,.94); --mood-accent:#8eb9e8; --mood-accent-soft:rgba(142,185,232,.15); --mood-accent-border:rgba(142,185,232,.44); --mood-glow:rgba(142,185,232,.17); --mood-glow-secondary:rgba(125,111,210,.11); }
+.mood-shell[data-mood="low"] { --mood-bg:#0c0915; --mood-surface:#151021; --mood-surface-strong:#1c162a; --mood-nav:rgba(12,9,21,.94); --mood-accent:#aaa2e8; --mood-accent-soft:rgba(170,162,232,.15); --mood-accent-border:rgba(170,162,232,.44); --mood-glow:rgba(170,162,232,.16); --mood-glow-secondary:rgba(219,172,103,.11); }
+.mood-shell[data-mood="rough"] { --mood-bg:#120c07; --mood-surface:#1b120c; --mood-surface-strong:#251810; --mood-nav:rgba(18,12,7,.94); --mood-accent:#e0ae6b; --mood-accent-soft:rgba(224,174,107,.15); --mood-accent-border:rgba(224,174,107,.46); --mood-glow:rgba(214,170,112,.17); --mood-glow-secondary:rgba(183,95,58,.10); }
+.mood-ambient { background: radial-gradient(circle at 80% 8%, var(--mood-glow), transparent 42%), radial-gradient(circle at 8% 88%, var(--mood-glow-secondary), transparent 43%), linear-gradient(135deg, var(--mood-accent-soft), transparent 32%); opacity:.88; }
+.mood-shell .card { background: linear-gradient(145deg,var(--mood-surface-strong),var(--mood-surface)); border-color:var(--mood-accent-border); transition: background-color 700ms ease, border-color 700ms ease; }
+.mood-shell aside, .mood-shell > div > nav { background-color:var(--mood-nav) !important; border-color:var(--mood-accent-border) !important; }
+.mood-badge { border:1px solid var(--mood-accent-border); background:var(--mood-accent-soft); color:var(--mood-accent); border-radius:999px; padding:3px 8px; font-size:9px; letter-spacing:.06em; }
+.weather-orb { background:radial-gradient(circle,var(--weather-glow,rgba(255,255,255,.1)),transparent 68%); transition:background 900ms ease; }
+.weather-scene[data-weather^="clear-day"] { --weather-glow:rgba(255,202,92,.22); }
+.weather-scene[data-weather^="clear-night"] { --weather-glow:rgba(111,140,231,.16); }
+.weather-scene[data-weather^="cloud"] { --weather-glow:rgba(159,185,204,.14); }
+.weather-scene[data-weather^="rain"] { --weather-glow:rgba(75,145,219,.18); }
+.weather-scene[data-weather^="storm"] { --weather-glow:rgba(145,109,225,.2); }
 .mood-shell .primary-button { background-color: var(--mood-accent); }
 .mood-shell .primary-button:hover { filter: brightness(1.08); }
 .mood-shell .choice-active { border-color: var(--mood-accent-border); background-color: var(--mood-accent-soft); color: var(--mood-accent); }

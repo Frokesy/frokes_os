@@ -16,7 +16,13 @@ const reflection = z.object({
 
 export const recordPatchSchema = z.object({
   date: date.optional(),
+  wordId: z.string().max(80).optional(),
   familiarWord: z.boolean().optional(),
+  wordSaved: z.boolean().optional(),
+  wordReviewedAt: z.string().datetime().optional(),
+  wordNote: z.string().max(2000).optional(),
+  moneyTipId: z.string().max(80).optional(),
+  moneyFeedback: z.enum(["useful", "not_relevant", "already_know", "less_like_this"]).optional(),
   mood: mood.optional(),
   reflection: reflection.optional(),
   completedAt: z.string().datetime().optional(),

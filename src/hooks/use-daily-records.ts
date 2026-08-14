@@ -117,10 +117,10 @@ export function useDailyRecords(userId: string, timeZone: string) {
     };
   }, [sync, userId]);
 
-  const updateToday = (patch: RecordPatch) => {
-    const mutation: Mutation = { id: crypto.randomUUID(), date: today, patch, createdAt: new Date().toISOString() };
+  const updateRecord = (recordDate: string, patch: RecordPatch) => {
+    const mutation: Mutation = { id: crypto.randomUUID(), date: recordDate, patch, createdAt: new Date().toISOString() };
     setRecords(current => {
-      const next = { ...current, [today]: { ...current[today], ...patch, date: today } };
+      const next = { ...current, [recordDate]: { ...current[recordDate], ...patch, date: recordDate } };
       localStorage.setItem(storageKey(userId), JSON.stringify(next));
       return next;
     });
@@ -131,5 +131,7 @@ export function useDailyRecords(userId: string, timeZone: string) {
     window.setTimeout(() => void sync(), 0);
   };
 
-  return { records, today: records[today] ?? { date: today }, updateToday, ready, syncStatus, pendingCount, sync };
+  const updateToday = (patch: RecordPatch) => updateRecord(today, patch);
+
+  return { records, today: records[today] ?? { date: today }, updateToday, updateRecord, ready, syncStatus, pendingCount, sync };
 }

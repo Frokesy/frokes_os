@@ -64,9 +64,9 @@ export function AppShell({ userId, initialProfile }: { userId: string; initialPr
       <main className="pb-24 md:ml-[244px] md:pb-8">
         <div key={view} className="workspace-view-enter">
           {view === "home" ? (
-            <TodayView store={store} userName={profile.name} timeZone={profile.timezone} onReturnToClock={returnToClock}/>
+            <TodayView store={store} userName={profile.name} timeZone={profile.timezone} priorities={profile.priorities} personalizationEnabled={profile.personalizationEnabled} activeMood={activeMood} onReturnToClock={returnToClock}/>
           ) : (
-            <HistoryView records={store.records} wordsOnly={view === "library"}/>
+            <HistoryView records={store.records} wordsOnly={view === "library"} onUpdateRecord={store.updateRecord}/>
           )}
         </div>
       </main>

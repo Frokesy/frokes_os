@@ -1,8 +1,9 @@
 "use client";
 
 import { Clock3, Cloud, CloudOff, RefreshCw } from "lucide-react";
+import { useEffect } from "react";
 import { ProgressRing } from "@/components/ui/progress-ring";
-import { dailyIndex, moneyTips, words } from "@/data/daily-content";
+import { moneyTips, selectMoneyTip, wordForDate, words } from "@/data/daily-content";
 import type { DayRecord } from "@/domain/types";
 import type { SyncStatus } from "@/hooks/use-daily-records";
 import { friendlyDate, greetingForHour, hourInTimeZone } from "@/lib/date";
@@ -12,6 +13,7 @@ import { ReflectionCard } from "./reflection-card";
 import { WordCard } from "./word-card";
 
 type Store = {
+  records: Record<string, DayRecord>;
   today: DayRecord;
   updateToday: (patch: Partial<DayRecord>) => void;
   ready: boolean;
@@ -20,10 +22,19 @@ type Store = {
   sync: () => Promise<void>;
 };
 
-export function TodayView({ store, userName, timeZone, onReturnToClock }: { store: Store; userName: string; timeZone: string; onReturnToClock: () => void }) {
+export function TodayView({ store, userName, timeZone, priorities, personalizationEnabled, activeMood, onReturnToClock }: { store: Store; userName: string; timeZone: string; priorities: string[]; personalizationEnabled: boolean; activeMood: string; onReturnToClock: () => void }) {
   const now = new Date();
-  const word = words[dailyIndex(words.length, now, timeZone)];
-  const tip = moneyTips[dailyIndex(moneyTips.length, now, timeZone)];
+  const fallbackWord = wordForDate(now, timeZone);
+  const word = words.find(item => item.id === store.today.wordId) ?? fallbackWord;
+  const selection = selectMoneyTip({ date: now, records: store.records, priorities, mood: store.today.mood?.mood, personalized: personalizationEnabled, timeZone });
+  const tip = moneyTips.find(item => item.id === store.today.moneyTipId) ?? selection.tip;
+  useEffect(() => {
+    if (!store.ready) return;
+    const patch: Partial<DayRecord> = {};
+    if (!store.today.wordId) patch.wordId = fallbackWord.id;
+    if (!store.today.moneyTipId) patch.moneyTipId = selection.tip.id;
+    if (Object.keys(patch).length) store.updateToday(patch);
+  }, [fallbackWord.id, selection.tip.id, store]);
   const done = [store.today.familiarWord !== undefined, !!store.today.mood, !!store.today.reflection].filter(Boolean).length;
   const progress = Math.round(done / 3 * 100);
 
@@ -33,15 +44,15 @@ export function TodayView({ store, userName, timeZone, onReturnToClock }: { stor
       <div>
         <p className="text-xs uppercase tracking-[.18em] text-white/30">{friendlyDate(now, timeZone)}</p>
         <h1 className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">{greetingForHour(hourInTimeZone(now, timeZone))}, {userName}.</h1>
-        <div className="mt-2 flex items-center gap-3"><p className="text-sm text-white/40">Take what you need from today.</p><SyncIndicator status={store.syncStatus} pending={store.pendingCount} retry={store.sync}/></div>
+        <div className="mt-2 flex flex-wrap items-center gap-3"><p className="text-sm text-white/40">Take what you need from today.</p><span className="mood-badge capitalize">{activeMood === "neutral" ? "Quiet" : activeMood} atmosphere</span><SyncIndicator status={store.syncStatus} pending={store.pendingCount} retry={store.sync}/></div>
       </div>
       <div className="hidden items-center gap-3 sm:flex"><div className="text-right"><div className="text-xs text-white/55">Daily rhythm</div><div className="mt-1 text-[11px] text-white/25">{done} of 3 moments</div></div><ProgressRing value={progress}/></div>
     </header>
     <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/[.07] bg-white/[.02] p-4 sm:hidden"><div><div className="text-sm">Daily rhythm</div><div className="mt-1 text-xs text-white/30">{done} of 3 moments</div></div><ProgressRing value={progress}/></div>
     <div className="grid items-start gap-4 lg:grid-cols-2">
-      <WordCard word={word} familiar={store.today.familiarWord} onFamiliar={familiarWord => store.updateToday({ familiarWord })}/>
+      <WordCard word={word} record={store.today} onPatch={store.updateToday}/>
       <MoodCard value={store.today.mood} onSave={mood => store.updateToday({ mood })}/>
-      <MoneyCard tip={tip}/>
+      <MoneyCard tip={tip} reason={selection.reason} feedback={store.today.moneyFeedback} onFeedback={moneyFeedback => store.updateToday({ moneyFeedback })}/>
       <div className="space-y-4"><ReflectionCard value={store.today.reflection} onComplete={reflection => store.updateToday({ reflection, completedAt: new Date().toISOString() })}/><div className="hidden rounded-2xl border border-dashed border-white/[.07] p-5 lg:block"><p className="text-center text-xs text-white/25">There is no perfect day here. Showing up is enough.</p></div></div>
     </div>
   </div>;
